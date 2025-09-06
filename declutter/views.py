@@ -1,3 +1,14 @@
 from django.shortcuts import render
+from rest_framework import viewsets, permissions
+from .models import OutfitDeclutter
+from .serializers import OutfitDeclutterSerializer
 
-# Create your views here.
+class OutfitDeclutterViewSet(viewsets.ModelViewSet):
+    serializer_class = OutfitDeclutterSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return OutfitDeclutter.objects.filter(owner=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
