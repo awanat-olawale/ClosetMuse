@@ -8,9 +8,15 @@ class WardrobeItemMiniSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "category", "colour"]
 
 class OutfitPlannerSerializer(serializers.ModelSerializer):
+    item_ids = serializers.PrimaryKeyRelatedField(
+        queryset=WardrobeItem.objects.all(),
+        many=True,
+        write_only=True
+    )
+
     items = WardrobeItemMiniSerializer(many=True, read_only=True)
 
     class Meta:
         model = OutfitPlanner
-        fields = ["id", "owner", "date", "items", "occasion", "notes"]
+        fields = ["id", "owner", "date", "items","item_ids", "occasion"]
         read_only_fields = ["owner"]
