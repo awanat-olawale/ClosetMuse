@@ -11,12 +11,22 @@ class WardrobeItemMiniSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "category", "colour"]
 
 class OutfitDeclutterSerializer(serializers.ModelSerializer):
+    #POST items
+    item_id = serializers.PrimaryKeyRelatedField(
+        queryset=WardrobeItem.objects.all(),
+        write_only=True
+    )
+    #For GET, show nested items
     item = WardrobeItemMiniSerializer(read_only=True)
 
     class Meta:
         model = OutfitDeclutter
         fields = [
-            "id", "owner", "item", "last_worn",
+            "id", "owner", "item", "item_id", "last_worn",
             "wear_count", "reason", "created_at"
         ]
         read_only_fields = ["owner", "created_at"]
+
+    def create(self, validated_data):
+        item_instance = validated_data.pop("item_id")
+        return OutfitDeclutter.objects.create(item=item_instance, **validated_data)
