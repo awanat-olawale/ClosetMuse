@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-q+#t68n1t6kt2tn##18h-7#$p8uoj@x#s-ilf_zdd^ybf1top(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
  
 if os.environ.get("RENDER"):
     # Get the Render hostname without https://
